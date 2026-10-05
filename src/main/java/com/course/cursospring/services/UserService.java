@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.course.cursospring.domain.User;
-import com.course.cursospring.repositories.TaskRepository;
 import com.course.cursospring.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 public class UserService {
     private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
     
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
