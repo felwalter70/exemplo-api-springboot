@@ -21,11 +21,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity  (prePostEnabled = true)
 public class SecurityConfig {
     private static final String[] PUBLIC_MATCHERS = {
-        "/",
+        "/api",
     };
 
     private static final String[] PUBLIC_MATCHERS_POST = {
-        "/user",
+        "/api/user",
         "/login"
     };
 

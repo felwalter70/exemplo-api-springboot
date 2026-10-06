@@ -1,9 +1,14 @@
 package com.course.cursospring.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +24,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.course.cursospring.domain.enums.ProfileEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -57,4 +63,19 @@ public class User {
     @OneToMany (mappedBy = "user", fetch = FetchType.EAGER)
     @JsonProperty (access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
+
+
+    @ElementCollection (fetch = FetchType.EAGER)
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
+    @CollectionTable (name = "user_profiles")
+    @Column (name = "profile", nullable = false)
+    private Set<Integer> profiles = new HashSet<>();
+
+    public Set<ProfileEnum> getProfiles() {
+        return this.profiles.stream().map(profileCode -> ProfileEnum.toEnum(profileCode)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(ProfileEnum profile) {
+        this.profiles.add(profile.getCode());
+    }
 }
