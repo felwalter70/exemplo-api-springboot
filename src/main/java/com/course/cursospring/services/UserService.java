@@ -17,7 +17,7 @@ public class UserService {
     
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new RuntimeException(String.format("User not found! Id: %", id)));
+        return user.orElseThrow(() -> new RuntimeException(String.format("User not found! Id: %d", id)));
     }
 
     @Transactional 
@@ -32,7 +32,9 @@ public class UserService {
     @Transactional
     public User update(User obj) {
         User newUserObj = this.findById(obj.getId());
-        newUserObj.setPassword(newUserObj.getPassword());
+
+        newUserObj.setPassword(obj.getPassword());
+        
         return this.userRepository.save(newUserObj);
     }
 

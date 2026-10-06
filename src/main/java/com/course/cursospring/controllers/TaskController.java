@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.course.cursospring.domain.Task;
 import com.course.cursospring.services.TaskService;
+import com.course.cursospring.services.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequiredArgsConstructor 
 public class TaskController {
     private final TaskService taskService;
+    private final UserService userService;
 
 
     @GetMapping("/{id}")
@@ -41,6 +43,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
+        userService.findById(userId);
         List<Task> tasks = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(tasks);
     }
@@ -57,7 +60,8 @@ public class TaskController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putMethodName(@PathVariable Long id, @RequestBody Task taskBody) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Task taskBody) {
+        taskBody.setId(id);
         this.taskService.update(taskBody);
         
         return ResponseEntity.noContent().build();
