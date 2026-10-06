@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.course.cursospring.domain.User;
 import com.course.cursospring.repositories.UserRepository;
+import com.course.cursospring.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserService {
     
     public User findById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
-        return user.orElseThrow(() -> new RuntimeException(String.format("User not found! Id: %d", id)));
+        return user.orElseThrow(() -> new ObjectNotFoundException(String.format("User not found! Id: %d", id)));
     }
 
     @Transactional 

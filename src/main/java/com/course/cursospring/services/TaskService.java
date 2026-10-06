@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.course.cursospring.domain.Task;
 import com.course.cursospring.domain.User;
 import com.course.cursospring.repositories.TaskRepository;
+import com.course.cursospring.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class TaskService {
 
     public Task findById(Long id) {
         Optional<Task> task = this.taskRepository.findById(id);
-        return task.orElseThrow(() -> new RuntimeException(String.format("Task not found. Id: %d", id)));
+        return task.orElseThrow(() -> new ObjectNotFoundException(String.format("Task not found. Id: %d", id)));
     }
 
     public List<Task> findAllByUserId(Long userId) {
