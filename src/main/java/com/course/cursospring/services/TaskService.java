@@ -1,5 +1,6 @@
 package com.course.cursospring.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class TaskService {
         return task.orElseThrow(() -> new RuntimeException(String.format("Task not found. Id: %d", id)));
     }
 
+    public List<Task> findAllByUserId(Long userId) {
+        List<Task> tasks = this.taskRepository.findByUser_id(userId);
+        return tasks;
+    }
 
     @Transactional 
     public Task create(Task obj) {

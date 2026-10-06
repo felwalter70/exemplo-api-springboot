@@ -15,6 +15,7 @@ import com.course.cursospring.services.UserService;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +31,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController 
 @RequestMapping ("/api/user")
 @Validated 
-@AllArgsConstructor 
+@RequiredArgsConstructor 
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
     
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
