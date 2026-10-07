@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.course.cursospring.domain.User;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor 
 public class UserService {
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     
     public User findById(Long id) {
@@ -31,7 +32,7 @@ public class UserService {
         // Garante que o id será gerado pelo DB  
         obj.setId(null);
 
-        obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        obj.setPassword(this.passwordEncoder.encode(obj.getPassword()));
         obj.setProfiles(Stream.of(ProfileEnum.USER.getCode()).collect(Collectors.toSet()));
         
         obj = this.userRepository.save(obj);
