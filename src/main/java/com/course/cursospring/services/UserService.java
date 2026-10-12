@@ -1,16 +1,19 @@
 package com.course.cursospring.services;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.course.cursospring.domain.User;
 import com.course.cursospring.domain.enums.ProfileEnum;
 import com.course.cursospring.repositories.UserRepository;
+import com.course.cursospring.security.UserSpringSecurity;
+import com.course.cursospring.services.exceptions.AuthorizationException;
 import com.course.cursospring.services.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -23,6 +26,11 @@ public class UserService {
     private final UserRepository userRepository;
     
     public User findById(Long id) {
+        UserSpringSecurity userSpringSecurity = authorized();
+
+        if (!Objects.nonNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN) && !id.equals(userSpringSecurity.getId()))
+            throw new AuthorizationException("Access denied!");
+
         Optional<User> user = this.userRepository.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException(String.format("User not found! Id: %d", id)));
     }
@@ -55,6 +63,14 @@ public class UserService {
         }
         catch (Exception e) {
             throw new RuntimeException("User delete is prohibited (Related to another model)");
+        }
+    }
+    
+    public static UserSpringSecurity authorized() {
+        try {
+            return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return null;
         }
     }
 }

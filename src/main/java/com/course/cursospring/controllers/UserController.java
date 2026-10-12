@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController 
-@RequestMapping ("/api/user")
+@RequestMapping ("/api/user") // url/api/user
 @Validated 
 @RequiredArgsConstructor 
 public class UserController {

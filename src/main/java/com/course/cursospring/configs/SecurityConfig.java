@@ -24,6 +24,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.course.cursospring.security.JWTAuthenticationFilter;
+import com.course.cursospring.security.JWTAuthorizationFilter;
 import com.course.cursospring.security.JWTUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -90,6 +91,12 @@ public class SecurityConfig {
                     jwtUtil
                 ),
                 UsernamePasswordAuthenticationFilter.class
+            )
+
+            .addFilter(new JWTAuthorizationFilter(
+                authenticationManager, 
+                jwtUtil, 
+                userDetailsService)
             )
 
             .build();

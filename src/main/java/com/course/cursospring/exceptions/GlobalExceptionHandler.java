@@ -4,9 +4,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.course.cursospring.services.exceptions.AuthorizationException;
 import com.course.cursospring.services.exceptions.DataBindingViolationException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.nio.file.AccessDeniedException;
+
+import javax.security.sasl.AuthenticationException;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +55,36 @@ public class GlobalExceptionHandler {
         details.setDetail("Details: " + ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(details);
+    }
+
+    @ExceptionHandler (AuthenticationException.class)
+    public ResponseEntity<ProblemDetail> handleAuthenticationException(AuthenticationException ex) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+
+        details.setTitle("Authentication error");
+        details.setDetail("Details: " + ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(details);
+    }
+
+    @ExceptionHandler (AccessDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException ex) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+
+        details.setTitle("Access denied");
+        details.setDetail("Details: " + ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(details);
+    }
+
+    @ExceptionHandler (AuthorizationException.class)
+    public ResponseEntity<ProblemDetail> handleAuthorizationException(AuthorizationException ex) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+
+        details.setTitle("Authorization error");
+        details.setDetail("Details: " + ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(details);
     }
 
     @ExceptionHandler (Exception.class)
