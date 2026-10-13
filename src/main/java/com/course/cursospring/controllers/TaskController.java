@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.course.cursospring.domain.Task;
+import com.course.cursospring.domain.projection.TaskProjection;
 import com.course.cursospring.services.TaskService;
 import com.course.cursospring.services.UserService;
 
@@ -38,8 +39,8 @@ public class TaskController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId) {
-        List<Task> tasks = this.taskService.findAllByUser();
+    public ResponseEntity<List<TaskProjection>> findAllByUserId(@PathVariable Long userId) {
+        List<TaskProjection> tasks = this.taskService.findAllByUser();
         return ResponseEntity.ok().body(tasks);
     }
 

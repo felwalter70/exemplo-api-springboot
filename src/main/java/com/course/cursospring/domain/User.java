@@ -19,10 +19,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import com.course.cursospring.domain.enums.ProfileEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,16 +28,11 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table (name = User.TABLE_NAME)
-@Getter 
-@Setter
+@Data 
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode 
 public class User {
     public static final String TABLE_NAME = "users";
-
-    public interface CreateUser {}
-    public interface UpdateUser {}
 
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -48,15 +41,15 @@ public class User {
 
 
     @Column (name = "username", length = 100, nullable = false, unique = true)
-    @NotBlank (groups = CreateUser.class)
-    @Size (groups = CreateUser.class, min = 3, max = 100)
+    @NotBlank
+    @Size (min = 3, max = 100)
     private String username;
 
 
     @JsonProperty (access = Access.WRITE_ONLY)
     @Column (name = "password", length = 80, nullable = false)
-    @NotBlank (groups = {CreateUser.class, UpdateUser.class})
-    @Size (groups = {CreateUser.class, UpdateUser.class}, min = 8, max = 80)
+    @NotBlank
+    @Size (min = 8, max = 80)
     private String password;
 
 

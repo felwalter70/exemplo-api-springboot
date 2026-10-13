@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.course.cursospring.domain.Task;
+import com.course.cursospring.domain.projection.TaskProjection;
 
 @Repository 
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findByUser_id(Long id);
+    List<TaskProjection> findByUser_id(Long id);
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.course.cursospring.domain.Task;
 import com.course.cursospring.domain.User;
 import com.course.cursospring.domain.enums.ProfileEnum;
+import com.course.cursospring.domain.projection.TaskProjection;
 import com.course.cursospring.repositories.TaskRepository;
 import com.course.cursospring.security.UserSpringSecurity;
 import com.course.cursospring.services.exceptions.AuthorizationException;
@@ -35,13 +36,13 @@ public class TaskService {
         return task;
     }
 
-    public List<Task> findAllByUser() {
+    public List<TaskProjection> findAllByUser() {
         UserSpringSecurity userSpringSecurity = UserService.authorized();
 
         if (Objects.isNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
 
-        List<Task> tasks = this.taskRepository.findByUser_id(userSpringSecurity.getId());
+        List<TaskProjection> tasks = this.taskRepository.findByUser_id(userSpringSecurity.getId());
         return tasks;
     }
 

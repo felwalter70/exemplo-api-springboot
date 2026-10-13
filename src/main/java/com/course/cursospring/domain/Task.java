@@ -11,18 +11,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity 
 @Table (name = Task.TABLE_NAME)
-@Getter 
-@Setter
+@Data 
 @NoArgsConstructor 
 @AllArgsConstructor 
-@EqualsAndHashCode 
 public class Task {
     public static final String TABLE_NAME = "tasks";
 
